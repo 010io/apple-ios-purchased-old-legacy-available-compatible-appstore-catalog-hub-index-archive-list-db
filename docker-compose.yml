@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  # Основний API сервіс
+  ios-catalog-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+    environment:
+      - DATABASE_URL=sqlite:///app/data/catalog.db
+      - LOG_LEVEL=INFO
+      - API_HOST=0.0.0.0
+      - API_PORT=8000
+    restart: unless-stopped
+    depends_on:
+      - scheduler
+
+  # Планувальник для збору даних
+  scheduler:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: ["python", "-m", "scheduler.main"]
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+    environment:
+      - DATABASE_URL=sqlite:///app/data/catalog.db
+      - LOG_LEVEL=INFO
+      - COLLECTOR_SCHEDULE=0 3 * * *  # Щодня о 3:00
+    restart: unless-stopped
+
+  # Збирач даних (можна запускати вручну)
+  fetcher:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: ["python", "-m", "fetcher.main"]
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+    environment:
+      - DATABASE_URL=sqlite:///app/data/catalog.db
+      - LOG_LEVEL=INFO
+      - ITUNES_API_DELAY=0.1  # Затримка між запитами
+    profiles:
+      - manual  # Не запускається автоматично
+
+volumes:
+  # Постійні томи для даних
+  catalog_data:
+    driver: local
+  catalog_logs:
+    driver: local
