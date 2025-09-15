@@ -1,0 +1,39 @@
+# FastAPI та пов'язані залежності
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+pydantic>=2.5.0
+pydantic-settings>=2.1.0
+
+# База даних та ORM
+sqlalchemy>=2.0.23
+sqlite3-to-sqlite>=1.0.0
+alembic>=1.13.0
+
+# HTTP клієнт для API запитів
+httpx>=0.25.0
+requests>=2.31.0
+
+# Планувальник задач
+apscheduler>=3.10.4
+
+# CSV обробка
+pandas>=2.1.0
+
+# Логування
+loguru>=0.7.2
+
+# Розробка та тестування
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
+pytest-cov>=4.1.0
+
+# Лінтинг та форматування
+ruff>=0.1.0
+mypy>=1.7.0
+black>=23.11.0
+
+# Дотфайли
+python-dotenv>=1.0.0
+
+# Типізація
+types-requests>=2.31.0
