@@ -63,13 +63,6 @@ jobs:
         mypy . --ignore-missing-imports --show-error-codes
         
     # GitHub Copilot integration for code analysis
-    - name: GitHub Copilot Code Review
-      if: github.event_name == 'pull_request'
-      uses: github/copilot-cli-action@v1
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        command: 'analyze'
-        files: '**/*.py'
         
   test:
     name: Run Tests
